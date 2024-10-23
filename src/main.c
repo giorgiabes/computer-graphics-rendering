@@ -105,6 +105,14 @@ void clear_color_buffer(uint32_t color)
 	}
 }
 
+void draw_grid(void) {
+	for (int y = 0; y < window_height; y += 20) {
+		for (int x = 0; x < window_width; x += 20) {
+			color_buffer[(window_width * y) + x] = 0xFF333333;
+		}
+	}
+}
+
 void render_color_buffer(void)
 {
 	SDL_UpdateTexture(
@@ -121,8 +129,10 @@ void render(void)
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
+	draw_grid();
+
 	render_color_buffer();
-	clear_color_buffer(0xFFFFFF00);
+	clear_color_buffer(0xFF000000);
 
 
 	SDL_RenderPresent(renderer);
