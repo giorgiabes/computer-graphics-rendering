@@ -13,10 +13,8 @@ SDL_Texture* color_buffer_texture = NULL;
 int window_width = 800;
 int window_height = 600;
 
-bool initialize_window(void)
-{
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-	{
+bool initialize_window(void) {
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		fprintf(stderr, "Error initializing SDL.\n");
 		return false;
 	}
@@ -36,15 +34,13 @@ bool initialize_window(void)
 			window_height,
 			SDL_WINDOW_BORDERLESS
 			);
-	if (!window)
-	{
+	if (!window) {
 		fprintf(stderr, "Error creating SDL window.\n");
 		return false;
 	}
 	// Create a SDL renderer
 	renderer = SDL_CreateRenderer(window, -1, 0);
-	if (!renderer)
-	{
+	if (!renderer) {
 		fprintf(stderr, "Error creating SDL renderer.\n");
 		return false;
 	}
@@ -53,8 +49,7 @@ bool initialize_window(void)
 	return true;
 }
 
-void setup(void)
-{
+void setup(void) {
 	// Allocate the required memory in bytes to hold the 
 	// color buffer
 	color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * 
@@ -72,13 +67,11 @@ void setup(void)
 			);
 }
 
-void process_input(void)
-{
+void process_input(void) {
 	SDL_Event event;
 	SDL_PollEvent(&event);
 
-	switch (event.type)
-	{
+	switch (event.type) {
 		case SDL_QUIT:
 			is_running = false;
 			break;
@@ -89,17 +82,13 @@ void process_input(void)
 	}
 }
 
-void update(void)
-{
+void update(void) {
 	// TODO:
 }
 
-void clear_color_buffer(uint32_t color)
-{
-	for (int y = 0; y < window_height; y++)
-	{
-		for (int x = 0; x < window_width; x++)
-		{
+void clear_color_buffer(uint32_t color) {
+	for (int y = 0; y < window_height; y++) {
+		for (int x = 0; x < window_width; x++) {
 			color_buffer[(window_width * y) + x] = color;
 		}
 	}
@@ -113,8 +102,17 @@ void draw_grid(void) {
 	}
 }
 
-void render_color_buffer(void)
-{
+void draw_rect(int x, int y, int width, int height, uint32_t color) {
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			int current_x = x + i;
+			int current_y = y + j;
+			color_buffer[(window_width * current_y) + current_x] = color;
+		}
+	}
+}
+
+void render_color_buffer(void) {
 	SDL_UpdateTexture(
 			color_buffer_texture,
 			NULL,
@@ -124,12 +122,12 @@ void render_color_buffer(void)
 	SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
-void render(void)
-{
+void render(void) {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
 	draw_grid();
+	draw_rect(300, 200, 300, 150, 0xFFFF00FF);
 
 	render_color_buffer();
 	clear_color_buffer(0xFF000000);
@@ -138,8 +136,7 @@ void render(void)
 	SDL_RenderPresent(renderer);
 }
 
-void destroy_window(void)
-{
+void destroy_window(void) {
 	free(color_buffer);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -147,14 +144,12 @@ void destroy_window(void)
 }
 
 
-int main (void)
-{
+int main (void) {
 	is_running = initialize_window();
 
 	setup();
 
-	while (is_running)
-	{
+	while (is_running) {
 		process_input();
 		update();
 		render();
