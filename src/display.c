@@ -21,13 +21,13 @@ bool initialize_window(void) {
 
 	// Create a SDL Window
 	window = SDL_CreateWindow(
-			NULL,
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
-			window_width,
-			window_height,
-			SDL_WINDOW_BORDERLESS
-			);
+		NULL,
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		window_width,
+		window_height,
+		SDL_WINDOW_BORDERLESS
+	);
 	if (!window) {
 		fprintf(stderr, "Error creating SDL window.\n");
 		return false;
@@ -69,11 +69,11 @@ void draw_rect(int x, int y, int width, int height, uint32_t color) {
 
 void render_color_buffer(void) {
 	SDL_UpdateTexture(
-			color_buffer_texture,
-			NULL,
-			color_buffer,
-			(int) (window_width * sizeof(uint32_t))
-			);
+		color_buffer_texture,
+		NULL,
+		color_buffer,
+		(int) (window_width * sizeof(uint32_t))
+	);
 	SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
